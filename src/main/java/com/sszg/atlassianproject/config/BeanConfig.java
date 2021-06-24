@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.sszg.atlassianproject.dao.DynamoStore;
+import com.sszg.atlassianproject.model.Account;
 import com.sszg.atlassianproject.model.Contact;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,5 +58,10 @@ public class BeanConfig {
     @Bean
     public DynamoStore<Contact> contactDynamoStore(DynamoDBMapper dynamoDBMapper) {
         return new DynamoStore<>(dynamoDBMapper, Contact.class);
+    }
+
+    @Bean
+    public DynamoStore<Account> accountDynamoStore(DynamoDBMapper dynamoDBMapper) {
+        return new DynamoStore<>(dynamoDBMapper, Account.class);
     }
 }

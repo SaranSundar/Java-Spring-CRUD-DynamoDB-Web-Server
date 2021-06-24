@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 // TODO: Explain why all these annotations are needed
 @DynamoDBTable(tableName = "accounts")
@@ -38,6 +39,7 @@ public class Account {
     private String postalCode;
     @DynamoDBAttribute
     private String country;
+    // TODO: Make contactIds default to empty list not null
     @DynamoDBAttribute
-    private List<String> contactIds;
+    private Set<String> contactIds;
 }

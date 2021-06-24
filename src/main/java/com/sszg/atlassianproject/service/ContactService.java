@@ -35,21 +35,21 @@ public class ContactService {
 
     public Contact getContact(String uid) {
         if (StringUtils.isNullOrEmpty(uid)) {
-            throw new InvalidRequestException("Contact UID for GET should is null or empty");
+            throw new InvalidRequestException("Contact UID for GET should provide a UID");
         }
         return contactStore.getContact(uid);
     }
 
     public Contact deleteContact(String uid) {
         if (StringUtils.isNullOrEmpty(uid)) {
-            throw new InvalidRequestException("Contact UID for GET should is null or empty");
+            throw new InvalidRequestException("Contact UID for GET should provide a UID");
         }
         return contactStore.deleteContact(uid);
     }
 
     public List<Contact> getContactsByEmail(String email) {
         if (StringUtils.isNullOrEmpty(email)) {
-            throw new InvalidRequestException("Contact email for GET is null or empty");
+            throw new InvalidRequestException("Contact email for GET should provide a UID");
         }
         return contactStore.getAllContactsWithEmail(email);
     }

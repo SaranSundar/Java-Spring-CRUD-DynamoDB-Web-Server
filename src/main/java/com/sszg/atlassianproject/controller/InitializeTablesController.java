@@ -76,8 +76,11 @@ public class InitializeTablesController {
                             .withReadCapacityUnits((long) 5)
                             .withWriteCapacityUnits((long) 1))
                     .withAttributeDefinitions(attributeDefinitions)
-                    .withKeySchema(tableKeySchema)
-                    .withGlobalSecondaryIndexes(globalSecondaryIndices);
+                    .withKeySchema(tableKeySchema);
+
+            if (!globalSecondaryIndices.isEmpty()) {
+                createTableRequest.withGlobalSecondaryIndexes(globalSecondaryIndices);
+            }
 
             System.out.println("Attempting to create table " + tableName + "; please wait...");
             Table table = dynamoDB.createTable(createTableRequest);
