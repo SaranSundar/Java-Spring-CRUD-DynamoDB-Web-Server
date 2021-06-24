@@ -10,7 +10,7 @@ import com.sszg.atlassianproject.exception.ItemNotFoundException;
 
 import java.util.*;
 
-public class DynamoStore<T> {
+public class DynamoStore<T> implements DataStore<T> {
 
     private final DynamoDBMapper dynamoDBMapper;
     private final Class<T> itemClazz;
@@ -28,12 +28,12 @@ public class DynamoStore<T> {
     public List<T> queryForItem(String globalSIN, String tableIndex, String valueToFind) {
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":val1", new AttributeValue().withS(valueToFind));
-        eav.put(":val2", new AttributeValue().withS("frisco"));
-        Map<String, Condition> filters = new HashMap<>();
-        filters.put("city", new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(Collections.singletonList(new AttributeValue(":val2"))));
+//        eav.put(":val2", new AttributeValue().withS("frisco"));
+//        Map<String, Condition> filters = new HashMap<>();
+//        filters.put("city", new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(Collections.singletonList(new AttributeValue(":val2"))));
         DynamoDBQueryExpression<T> queryExpression = new DynamoDBQueryExpression<T>()
                 .withKeyConditionExpression(tableIndex + " = :val1")
-                .withQueryFilter(filters)
+//                .withQueryFilter(filters)
                 .withConsistentRead(false)
                 .withIndexName(globalSIN)
                 .withExpressionAttributeValues(eav);

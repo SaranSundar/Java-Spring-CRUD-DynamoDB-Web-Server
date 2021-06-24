@@ -50,7 +50,7 @@ public class ContactController {
     }
 
     // TODO: CHange get urls to match paramaters
-    // HTTP GET URL - http://localhost:9500/api/contact
+    // HTTP GET URL - http://localhost:9500/api/contact-by-email?email=
     @GetMapping("/contact-by-email")
     public ResponseEntity<List<Contact>> getContactsByEmail(@RequestParam String email) throws InvalidRequestException, NotFoundException {
         log.info("Starting to query contact by email");
