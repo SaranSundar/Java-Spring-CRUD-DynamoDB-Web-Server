@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+  dynamodb-local-admin-gui:
+    container_name: dynamodb-local-admin-gui
+    image: instructure/dynamo-local-admin
+    ports:
+      - '8000:8000'
