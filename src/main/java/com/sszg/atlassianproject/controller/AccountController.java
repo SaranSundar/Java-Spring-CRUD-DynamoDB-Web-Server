@@ -35,6 +35,7 @@ public class AccountController {
 
     // HTTP POST URL - http://localhost:9500/api/account
     @PutMapping("/account")
+    // TODO: Do i need to throw error if they provide same contact uid multiple times even tho spring takes care of that
     public ResponseEntity<String> putAccount(@RequestBody Account account) throws InvalidRequestException {
         log.info("Starting to put account");
         log.info(account.toString());
