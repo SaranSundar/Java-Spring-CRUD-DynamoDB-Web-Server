@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "64c954b5-82c8-4558-b290-173e1421245a",
+		"name": "AtlassianProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Contacts",
+			"item": [
+				{
+					"name": "Create new contact",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"emailAddress\": \"saran@nilal.com\",\n\"city\": \"frisco\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9500/api/contact",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create contacts table",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/contacts-table",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contacts-table"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Existing Contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/contact?uid=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contact"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query contacts by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/contact?email=saran@nilal.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contact"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "saran@nilal.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete existing contact",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/contact?uid=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contact"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Create new Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"companyName\":\"cisco\",\n\"contactIds\": [\"82f0666c-4e15-405e-acdb-ad5e3dd51165\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9500/api/account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create accounts table",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/accounts-table",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"accounts-table"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Existing Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/account/{{accountUid}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"account",
+								"{{accountUid}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete existing account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/account?uid=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"account"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "Account UID",
+			"value": "accountUid"
+		}
+	]
+}
