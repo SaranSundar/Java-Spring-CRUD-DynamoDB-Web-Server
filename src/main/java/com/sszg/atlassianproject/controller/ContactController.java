@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class ContactController {
 
     // HTTP POST URL - http://localhost:9500/api/contact
     @PostMapping("/contact")
-    public ResponseEntity<String> postContact(@RequestBody Contact contact) throws InvalidRequestException {
+    public ResponseEntity<String> postContact(@Valid @RequestBody Contact contact) throws InvalidRequestException {
         log.info("Starting to post contact");
         log.info(contact.toString());
         contactService.postContact(contact);
@@ -33,33 +34,33 @@ public class ContactController {
 
     // HTTP POST URL - http://localhost:9500/api/contact
     @PutMapping("/contact")
-    public ResponseEntity<String> putContact(@RequestBody Contact contact) throws InvalidRequestException {
+    public ResponseEntity<String> putContact(@Valid @RequestBody Contact contact) throws InvalidRequestException {
         log.info("Starting to put contact");
         log.info(contact.toString());
         contactService.putContact(contact);
         return new ResponseEntity<>(contact.getUid(), HttpStatus.OK);
     }
 
-    // HTTP GET URL - http://localhost:9500/api/contact?uid=
-    @GetMapping("/contact")
-    public ResponseEntity<Contact> getContact(@RequestParam String uid) throws InvalidRequestException, NotFoundException {
+    // HTTP GET URL - http://localhost:9500/api/contact/{{contactUid}}
+    @GetMapping("/contact/{contactUid}")
+    public ResponseEntity<Contact> getContact(@PathVariable String contactUid) throws InvalidRequestException, NotFoundException {
         log.info("Starting to get contact");
-        log.info(uid);
-        Contact contact = contactService.getContact(uid);
+        log.info(contactUid);
+        Contact contact = contactService.getContact(contactUid);
         return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
-    // HTTP DELETE URL - http://localhost:9500/api/contact?uid=
-    @DeleteMapping("/contact")
-    public ResponseEntity<Contact> deleteContact(@RequestParam String uid) throws InvalidRequestException, NotFoundException {
+    // HTTP DELETE URL - http://localhost:9500/api/contact/{{contactUid}}
+    @DeleteMapping("/contact/{contactUid}")
+    public ResponseEntity<Contact> deleteContact(@PathVariable String contactUid) throws InvalidRequestException, NotFoundException {
         log.info("Starting to delete contact");
-        log.info(uid);
-        Contact contact = contactService.deleteContact(uid);
+        log.info(contactUid);
+        Contact contact = contactService.deleteContact(contactUid);
         return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
-    // HTTP GET URL - http://localhost:9500/api/contact-by-email?email=
-    @GetMapping("/contact-by-email")
+    // HTTP GET URL - http://localhost:9500/api/contact?email=
+    @GetMapping("/contact")
     public ResponseEntity<List<Contact>> getContactsByEmail(@RequestParam String email) throws InvalidRequestException, NotFoundException {
         log.info("Starting to query contact by email");
         log.info(email);

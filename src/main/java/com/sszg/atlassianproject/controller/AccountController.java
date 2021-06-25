@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,7 @@ public class AccountController {
 
     // HTTP POST URL - http://localhost:9500/api/account
     @PostMapping("/account")
-    public ResponseEntity<String> postAccount(@RequestBody Account account) throws InvalidRequestException {
+    public ResponseEntity<String> postAccount(@Valid @RequestBody Account account) throws InvalidRequestException {
         log.info("Starting to post account");
         log.info(account.toString());
         accountService.postAccount(account);
@@ -36,28 +37,28 @@ public class AccountController {
     // HTTP POST URL - http://localhost:9500/api/account
     @PutMapping("/account")
     // TODO: Do i need to throw error if they provide same contact uid multiple times even tho spring takes care of that
-    public ResponseEntity<String> putAccount(@RequestBody Account account) throws InvalidRequestException {
+    public ResponseEntity<String> putAccount(@Valid @RequestBody Account account) throws InvalidRequestException {
         log.info("Starting to put account");
         log.info(account.toString());
         accountService.putAccount(account);
         return new ResponseEntity<>(account.getUid(), HttpStatus.OK);
     }
 
-    // HTTP GET URL - http://localhost:9500/api/account?uid=
-    @GetMapping("/account")
-    public ResponseEntity<Account> getAccount(@RequestParam String uid) throws InvalidRequestException, NotFoundException {
+    // HTTP GET URL - http://localhost:9500/api/{{accountUid}}
+    @GetMapping("/account/{accountUid}")
+    public ResponseEntity<Account> getAccount(@PathVariable String accountUid) throws InvalidRequestException, NotFoundException {
         log.info("Starting to get account");
-        log.info(uid);
-        Account account = accountService.getAccount(uid);
+        log.info(accountUid);
+        Account account = accountService.getAccount(accountUid);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
-    // HTTP DELETE URL - http://localhost:9500/api/account?uid=
-    @DeleteMapping("/account")
-    public ResponseEntity<Account> deleteAccount(@RequestParam String uid) throws InvalidRequestException, NotFoundException {
+    // HTTP DELETE URL - http://localhost:9500/api/{{accountUid}}
+    @DeleteMapping("/account/{accountUid}")
+    public ResponseEntity<Account> deleteAccount(@PathVariable String accountUid) throws InvalidRequestException, NotFoundException {
         log.info("Starting to delete account");
-        log.info(uid);
-        Account account = accountService.deleteAccount(uid);
+        log.info(accountUid);
+        Account account = accountService.deleteAccount(accountUid);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }
