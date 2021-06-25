@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 public class InitializeTablesController {
 
     private final DynamoDB dynamoDB;
+    private Table contactsTable;
 
     public InitializeTablesController(DynamoDB dynamoDB) {
         this.dynamoDB = dynamoDB;
@@ -32,6 +34,23 @@ public class InitializeTablesController {
     public ResponseEntity<String> postContactsTable() {
         createContactsTable();
         return new ResponseEntity<>("Successfully Created Contacts Table", HttpStatus.OK);
+    }
+
+    @PostMapping("/contacts-table")
+    public ResponseEntity<String> postContactsTable(@RequestParam Boolean populateContacts) {
+        if (populateContacts) {
+            populateContactsTable();
+            return new ResponseEntity<>("Successfully Populated Contacts Table", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Populate Contacts not true, so no action taken", HttpStatus.OK);
+    }
+
+    public void populateContactsTable(){
+        if(contactsTable == null){
+            createContactsTable();
+        }
+
+        // TODO: Populate contacts table and repeat actions for accounts table
     }
 
     // HTTP POST URL - http://localhost:9500/api/accounts-table
@@ -63,7 +82,7 @@ public class InitializeTablesController {
                 Collections.emptyList(), indexKeySchema);
     }
 
-    public void createTable(
+    public Table createTable(
             String tableName,
             List<AttributeDefinition> attributeDefinitions,
             List<KeySchemaElement> tableKeySchema,
@@ -87,6 +106,7 @@ public class InitializeTablesController {
             table.waitForActive();
             System.out.println(table.getDescription());
             System.out.println("Success. Table status: " + table.getDescription().getTableStatus());
+            return table;
         } catch (Exception e) {
             System.err.println("Unable to create table: ");
             System.err.println(e.getMessage());
@@ -144,7 +164,7 @@ public class InitializeTablesController {
                 .withKeyType(KeyType.HASH));  //Partition key
 
         emailAddressIndex.setKeySchema(indexKeySchema);
-        createTable(tableName, attributeDefinitions, tableKeySchema,
+        contactsTable = createTable(tableName, attributeDefinitions, tableKeySchema,
                 Collections.singletonList(emailAddressIndex), indexKeySchema);
     }
 }
