@@ -1,27 +1,3 @@
-# JavaSpringCRUD
-
-Requirements Java 11, Docker
-
-# Commands to get started
-Clone Repo, I use IntelliJ
-
-Then run docker-compose -f docker-compose.yml up -d 
-
-You can now see the locally running AWS DynamoDB on port http://localhost:8000/
-
-Then run mvn clean, then mvn compile, and mvn install
-
-Then run the class com.sszg.atlassianproject.AtlassianProjectApplication
-
-Use the postman collection to test endpoints
-
-First you need to create the tables using the post man call for create contacts table then create accounts table
-
-POST http://localhost:9500/api/contacts-table
-
-POST http://localhost:9500/api/accounts-table
-
-
 <h1 align="center"> Java Spring CRUD DynamoDB Web Server </h1> <br>
 
 ## Table of Contents
