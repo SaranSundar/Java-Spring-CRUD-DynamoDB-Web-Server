@@ -31,18 +31,13 @@ public class InitializeTablesController {
     // HTTP POST URL - http://localhost:9500/api/contacts-table
     // TODO: Make exception show exception message in postman
     @PostMapping("/contacts-table")
-    public ResponseEntity<String> postContactsTable() {
-        createContactsTable();
-        return new ResponseEntity<>("Successfully Created Contacts Table", HttpStatus.OK);
-    }
-
-    @PostMapping("/contacts-table")
     public ResponseEntity<String> postContactsTable(@RequestParam Boolean populateContacts) {
-        if (populateContacts) {
+        createContactsTable();
+        if(populateContacts){
             populateContactsTable();
-            return new ResponseEntity<>("Successfully Populated Contacts Table", HttpStatus.OK);
+            return new ResponseEntity<>("Successfully Created And Populated Contacts Table", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Populate Contacts not true, so no action taken", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully Created Contacts Table", HttpStatus.OK);
     }
 
     public void populateContactsTable(){
