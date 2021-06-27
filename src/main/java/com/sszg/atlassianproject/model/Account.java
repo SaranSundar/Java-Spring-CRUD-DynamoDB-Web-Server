@@ -11,11 +11,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
-// TODO: Explain why all these annotations are needed
 @DynamoDBTable(tableName = "accounts")
 @Data
 @NoArgsConstructor
@@ -29,26 +29,31 @@ public class Account {
     private String uid;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String companyName;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String addressLine1;
     @DynamoDBAttribute
     @NotNull
     private String addressLine2;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String city;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String state;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String postalCode;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String country;
-    // TODO: Make contactIds default to empty list not null
     @DynamoDBAttribute
     @NotNull
     private Set<String> contactIds;

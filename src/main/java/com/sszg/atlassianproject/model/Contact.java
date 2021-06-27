@@ -10,9 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-// TODO: Explain why all these annotations are needed
 @DynamoDBTable(tableName = "contacts")
 @Data
 @NoArgsConstructor
@@ -26,26 +26,33 @@ public class Contact {
     private String uid;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String name;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String emailAddress;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String addressLine1;
     @DynamoDBAttribute
     @NotNull
     private String addressLine2;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String city;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String state;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String postalCode;
     @DynamoDBAttribute
     @NotNull
+    @NotBlank
     private String country;
 }

@@ -28,7 +28,6 @@ public class AccountStore {
     }
 
     public List<Contact> getContacts(Set<String> uids){
-        // TODO: Implement this with some query in dynamo db
         return contactDynamoStore.getContactsByUids(uids);
     }
 

@@ -64,7 +64,6 @@ public class DynamoStore<T> implements DataStore<T> {
     public T getItem(String key) {
         T item = dynamoDBMapper.load(itemClazz, key);
         if (item == null) {
-            // TODO: Think about if you want to throw table name as well, and make error more generic
             throw new ItemNotFoundException("Item not found in Dynamo DB with key " + key);
         }
         return item;

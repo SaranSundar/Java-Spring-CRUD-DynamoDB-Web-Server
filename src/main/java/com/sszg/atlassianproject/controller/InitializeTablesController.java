@@ -29,7 +29,6 @@ public class InitializeTablesController {
     }
 
     // HTTP POST URL - http://localhost:9500/api/contacts-table
-    // TODO: Make exception show exception message in postman
     @PostMapping("/contacts-table")
     public ResponseEntity<String> postContactsTable(@RequestParam Boolean populateContacts) {
         createContactsTable();
