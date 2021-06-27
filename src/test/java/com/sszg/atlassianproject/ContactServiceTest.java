@@ -19,8 +19,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 class ContactServiceTest {
@@ -64,6 +63,7 @@ class ContactServiceTest {
         var contact = contactService.getContact("ewfwefm");
         assertNotNull(contact);
         assertEquals("John Mulaney", contact.getName());
+        verify(contactStore, times(1)).getContact("ewfwefm");
     }
 
     @Test
@@ -78,6 +78,7 @@ class ContactServiceTest {
         assertEquals(contact.getEmailAddress(), "JohnMulaney@gmail.com");
         assertEquals(contact.getAddressLine1(), "77 E 4th St");
         assertEquals(contact.getPostalCode(), "10003");
+        verify(contactStore, times(1)).getContact("324324");
     }
 
 
@@ -88,35 +89,45 @@ class ContactServiceTest {
         assertEquals(InvalidRequestException.class, throwable.getClass());
         Throwable throwable2 = assertThrows(Throwable.class, () -> contactService.getContact(null));
         assertEquals(InvalidRequestException.class, throwable2.getClass());
+        verify(contactStore, times(0)).getContact("");
+    }
+
+    @Test
+    public void postContact_success() {
+        Contact trevorNoah = createContactFromFile("DummyContact2.json");
+        contactService.postContact(trevorNoah);
+        assertEquals(trevorNoah.getName(), "Trevor Noah");
+        verify(contactStore, times(1)).saveContact(trevorNoah);
+    }
+
+    @Test
+    public void postContact_exception() {
+        Contact trevorNoah = createContactFromFile("DummyContact2.json");
+        trevorNoah.setUid("weewvewv");
+        //Should not provide UID on post
+        Throwable throwable = assertThrows(Throwable.class, () -> contactService.postContact(trevorNoah));
+        assertEquals(InvalidRequestException.class, throwable.getClass());
+        verify(contactStore, times(0)).saveContact(trevorNoah);
+    }
+
+    @Test
+    public void putContact_success() {
+        Contact trevorNoah = createContactFromFile("DummyContact2.json");
+        trevorNoah.setUid("34gt45t");
+        contactService.putContact(trevorNoah);
+        verify(contactStore, times(1)).getContact(trevorNoah.getUid());
+        assertEquals(trevorNoah.getName(), "Trevor Noah");
+        trevorNoah.setName("#TheRealTrevorNoah");
+        contactService.putContact(trevorNoah);
+        verify(contactStore, times(2)).getContact(trevorNoah.getUid());
+        assertEquals(trevorNoah.getName(), "#TheRealTrevorNoah");
+    }
+
+    @Test
+    public void putContact_exception() {
+        Contact trevorNoah = createContactFromFile("DummyContact2.json");
+        assertThrows(InvalidRequestException.class, () -> contactService.putContact(trevorNoah));
+        verify(contactStore, times(0)).getContact(trevorNoah.getUid());
+        assertEquals(trevorNoah.getName(), "Trevor Noah");
     }
 }
-
-//    public void postContact(Contact contact) {
-//        if (contact.getUid() != null) {
-//            throw new InvalidRequestException("Contact for POST should not provide UID");
-//        }
-//        contactStore.saveContact(contact);
-//    }
-//
-//    public void putContact(Contact contact) {
-//        if (StringUtils.isNullOrEmpty(contact.getUid())) {
-//            throw new InvalidRequestException("Contact for PUT should provide a UID");
-//        }
-//        getContact(contact.getUid());
-//        // We try to get contact before saving new contact because, if it fails to get it will throw a ItemNotFoundException
-//        contactStore.saveContact(contact);
-//    }
-//
-//    public Contact deleteContact(String uid) {
-//        if (StringUtils.isNullOrEmpty(uid)) {
-//            throw new InvalidRequestException("Contact UID for GET should provide a UID");
-//        }
-//        return contactStore.deleteContact(uid);
-//    }
-//
-//    public List<Contact> getContactsByEmail(String email) {
-//        if (StringUtils.isNullOrEmpty(email)) {
-//            throw new InvalidRequestException("Contact email for GET should provide a UID");
-//        }
-//        return contactStore.getAllContactsWithEmail(email);
-//    }
