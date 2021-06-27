@@ -3,7 +3,9 @@ package com.sszg.atlassianproject.controller;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sszg.atlassianproject.exception.InvalidTableException;
+import com.sszg.atlassianproject.model.Contact;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +27,7 @@ public class InitializeTablesController {
 
     private final DynamoDB dynamoDB;
     private Table contactsTable;
+    private ObjectMapper mapper;
 
     public InitializeTablesController(DynamoDB dynamoDB) {
         this.dynamoDB = dynamoDB;
@@ -41,6 +46,25 @@ public class InitializeTablesController {
 
     public void populateContactsTable(){
         // TODO: Populate contacts table and repeat actions for accounts table
+        Contact contact1 = createContactFromFile("DummyContact1.json");
+        Contact contact2 = createContactFromFile("DummyContact2.json");
+
+    }
+
+
+    public Contact createContactFromFile(String fileName) {
+        if (mapper == null) {
+            mapper = new ObjectMapper();
+        }
+        // read JSON file and map/convert to java POJO
+        try {
+            String path = "src/test/resources/dummy_data/" + fileName;
+            File file = new File(path);
+            return mapper.readValue(file, Contact.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // HTTP POST URL - http://localhost:9500/api/accounts-table
@@ -109,6 +133,7 @@ public class InitializeTablesController {
         // Attribute definitions
         ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<>();
         attributeDefinitions.add(new AttributeDefinition("uid", ScalarAttributeType.S));
+        // Can be used to query on other fields
 //        attributeDefinitions.add(new AttributeDefinition()
 //                .withAttributeName("name")
 //                .withAttributeType("S"));
