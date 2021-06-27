@@ -64,6 +64,8 @@ one, I could have potentially used AWS Gateway + Lambda to interact with the Dyn
 
 Another one is the way I'm using swagger right now, normally you would create the spec for the api first, use the swagger or OpenAPI file to generate the request/response model, which would then get translated into the database model before being used. In this case I just directly made the models and then added annotations to generate the swagger documentation for them.
 
-Also at Capital One we use an internal tool called Chamber of Secrets to be able to securely hide and retrieve the values in application.properties to connect to different database for the different environments like local, dev, qa, and prod. Here I only setup the file for local dev, but normally we would have separate application.yml files for each environment with their properties defined.
+Also, at Capital One we use an internal tool called Chamber of Secrets to be able to securely hide and retrieve the values in application.properties to connect to different database for the different environments like local, dev, qa, and prod. Here I only set up the file for local dev, but normally we would have separate application.yml files for each environment with their properties defined.
+
+We would also traditionally have separate branches in the repo such as develop, master, and release. Where you would fork the project and make PR's into develop which then end up going to master and release. For this project though I just used one master branch.
 
 Lastly, I am new to some things used in this project such as DynamoDB, so the way I created the tables to show my work, and the classes annotations for attribute definitions and querying will probably have some more optimal ways of usage in production vs how it is showcased here. All in all I had fun working on this project, and it helped me learn a lot and grow as a developer for sure.
