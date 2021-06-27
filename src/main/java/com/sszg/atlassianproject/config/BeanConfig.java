@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.sszg.atlassianproject.dao.DynamoStore;
 import com.sszg.atlassianproject.model.Account;
 import com.sszg.atlassianproject.model.Contact;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
     // TODO: Replace with config file later
-
     String endpoint = "http://localhost:8000/";
 
     String accesskey = "key";
