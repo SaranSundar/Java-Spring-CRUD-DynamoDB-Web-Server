@@ -32,10 +32,7 @@ A few of the things you can do with this web server:
 
 ## Installation
 
-- Install Docker Desktop for Mac
-- Install Java 11 using Homebrew
-- Make sure Maven is installed as well
-- Clone and navigate to repo using terminal
+- Clone and navigate to repo using a terminal
 - We need to first setup the database using the docker-compose file, and some helper scripts that I have created
 - Run `sh startContainer.sh` in the terminal to get the local instance of dynamo db which we can access at http://localhost:8000 as defined in the docker-compose.yml file
 - Once you can see the database loaded on that port next we need to start the java spring app
