@@ -6,6 +6,7 @@ import com.sszg.atlassianproject.model.Contact;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class AccountStore {
@@ -26,11 +27,11 @@ public class AccountStore {
         return accountDynamoStore.getItem(uid);
     }
 
-    public List<Contact> getContacts(String uid){
+    public List<Contact> getContacts(Set<String> uids){
         // TODO: Implement this with some query in dynamo db
-        List<Contact> contacts = null; // = contactDynamoStore.queryForItem("EmailAddressIndex", "emailAddress", email);
-        return contacts;
+        return contactDynamoStore.getContactsByUids(uids);
     }
+
 
     public Account deleteAccount(String uid) throws ItemNotFoundException {
         Account account = getAccount(uid);

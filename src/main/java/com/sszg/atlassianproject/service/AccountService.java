@@ -8,6 +8,7 @@ import com.sszg.atlassianproject.model.Contact;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AccountService {
@@ -41,11 +42,8 @@ public class AccountService {
         return accountStore.getAccount(uid);
     }
 
-    public List<Contact> getContacts(String uid){
-        if (StringUtils.isNullOrEmpty(uid)) {
-            throw new InvalidRequestException("Account UID for GET Contacts should provide a UID");
-        }
-        return accountStore.getContacts(uid);
+    public List<Contact> getContacts(Set<String> uids){
+        return accountStore.getContacts(uids);
     }
 
     public Account deleteAccount(String uid) {

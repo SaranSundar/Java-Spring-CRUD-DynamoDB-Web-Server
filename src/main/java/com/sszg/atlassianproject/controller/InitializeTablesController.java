@@ -41,10 +41,6 @@ public class InitializeTablesController {
     }
 
     public void populateContactsTable(){
-        if(contactsTable == null){
-            createContactsTable();
-        }
-
         // TODO: Populate contacts table and repeat actions for accounts table
     }
 

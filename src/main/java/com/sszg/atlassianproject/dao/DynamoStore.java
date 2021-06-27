@@ -4,9 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.sszg.atlassianproject.exception.ItemNotFoundException;
+import com.sszg.atlassianproject.model.Contact;
 
 import java.util.*;
 
@@ -41,6 +40,25 @@ public class DynamoStore<T> implements DataStore<T> {
         PaginatedQueryList<T> results = dynamoDBMapper.query(itemClazz, queryExpression);
         List<T> queryList = new LinkedList<>(results); //--- Line1
         return queryList;
+    }
+
+    List<Contact> getContactsByUids(Set<String> contactUids) {
+        List<Contact> contacts = new ArrayList<>();
+        //The primary key for ArticleDao is "articleId"
+        for (String uid : contactUids) {
+            contacts.add(Contact.builder().uid(uid).build());
+        }
+        //Batch Load this list of objects
+        Map<String, List<Object>> batchResult = dynamoDBMapper.batchLoad(contacts);
+        if (batchResult.containsKey("contacts")
+                && batchResult.get("contacts") != null) {
+            List<Object> results = batchResult.get("contacts");
+            //Convert the list of Objects into "ArticlesDao
+            @SuppressWarnings("unchecked")
+            List<Contact> contactResults = (List<Contact>) (List<?>) results;
+            return contactResults;
+        }
+        return null;
     }
 
     public T getItem(String key) {

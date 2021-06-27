@@ -3,6 +3,7 @@ package com.sszg.atlassianproject.controller;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.sszg.atlassianproject.exception.InvalidRequestException;
 import com.sszg.atlassianproject.model.Account;
+import com.sszg.atlassianproject.model.Contact;
 import com.sszg.atlassianproject.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,16 @@ public class AccountController {
         log.info(accountUid);
         Account account = accountService.getAccount(accountUid);
         return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+
+    // HTTP GET URL - http://localhost:9500/api/{{accountUid}}/contacts
+    @GetMapping("/account/{accountUid}/contacts")
+    public ResponseEntity<List<Contact>> getAccountContacts(@PathVariable String accountUid) throws InvalidRequestException, NotFoundException {
+        log.info("Starting to get account");
+        log.info(accountUid);
+        Account account = accountService.getAccount(accountUid);
+        List<Contact> contacts = accountService.getContacts(account.getContactIds());
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
     // HTTP DELETE URL - http://localhost:9500/api/{{accountUid}}
