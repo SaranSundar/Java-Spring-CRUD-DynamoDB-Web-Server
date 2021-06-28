@@ -96,4 +96,42 @@ public class AccountServiceTest {
         assertThrows(InvalidRequestException.class, () -> accountService.getAccount(null));
         verify(accountStore, times(0)).getAccount("");
     }
+
+    @Test
+    public void postAccount_success() {
+        Account account1 = createAccountFromFile("DummyAccount1.json");
+        accountService.postAccount(account1);
+        verify(accountStore, times(1)).saveAccount(account1);
+    }
+
+    @Test
+    public void postAccount_exception() {
+        Account account1 = createAccountFromFile("DummyAccount1.json");
+        accountService.postAccount(account1);
+        verify(accountStore, times(1)).saveAccount(account1);
+    }
+
+    @Test
+    public void putAcount_success() {
+        Account account1 = createAccountFromFile("DummyAccount1.json");
+        accountService.postAccount(account1);
+        verify(accountStore, times(1)).saveAccount(account1);
+
+        account1.setUid("wvbet53");
+        accountService.putAccount(account1);
+        verify(accountStore, times(1)).getAccount("wvbet53");
+        assertEquals(account1.getCompanyName(), "Cisco");
+        account1.setCity("Austin");
+        accountService.putAccount(account1);
+        verify(accountStore, times(2)).getAccount("wvbet53");
+        assertEquals(account1.getCity(), "Austin");
+    }
+
+    @Test
+    public void putAcount_exception() {
+        Account account1 = createAccountFromFile("DummyAccount1.json");
+        assertThrows(InvalidRequestException.class, () -> accountService.putAccount(account1));
+        verify(accountStore, times(0)).getAccount(account1.getUid());
+        assertEquals(account1.getCompanyName(), "Cisco");
+    }
 }

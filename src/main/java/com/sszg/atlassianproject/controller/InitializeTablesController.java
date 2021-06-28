@@ -5,13 +5,16 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sszg.atlassianproject.exception.InvalidTableException;
+import com.sszg.atlassianproject.model.Account;
 import com.sszg.atlassianproject.model.Contact;
+import com.sszg.atlassianproject.service.AccountService;
+import com.sszg.atlassianproject.service.ContactService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -26,52 +30,65 @@ import java.util.List;
 public class InitializeTablesController {
 
     private final DynamoDB dynamoDB;
-    private Table contactsTable;
     private ObjectMapper mapper;
 
-    public InitializeTablesController(DynamoDB dynamoDB) {
+    private Table contactsTable;
+    private final ContactService contactService;
+    private final AccountService accountService;
+
+    private List<Contact> contacts;
+
+    public InitializeTablesController(DynamoDB dynamoDB, ContactService contactService, AccountService accountService) {
         this.dynamoDB = dynamoDB;
+        this.contactService = contactService;
+        this.accountService = accountService;
+        contacts = new ArrayList<>();
+        mapper = new ObjectMapper();
     }
 
-    // HTTP POST URL - http://localhost:9500/api/contacts-table
-    @PostMapping("/contacts-table")
-    public ResponseEntity<String> postContactsTable(@RequestParam Boolean populateContacts) {
+    // HTTP POST URL - http://localhost:{{port}}/api/tables
+    @Operation(summary = "Create tables for account and contact")
+    @PostMapping("/tables")
+    public ResponseEntity<String> postTables() {
         createContactsTable();
-        if(populateContacts){
-            populateContactsTable();
-            return new ResponseEntity<>("Successfully Created And Populated Contacts Table", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Successfully Created Contacts Table", HttpStatus.OK);
+        createAccountsTable();
+        return new ResponseEntity<>("Successfully Created Contacts And Accounts Table", HttpStatus.OK);
     }
 
-    public void populateContactsTable(){
-        // TODO: Populate contacts table and repeat actions for accounts table
+    // HTTP POST URL - http://localhost:{{port}}/api/populate-tables
+    @Operation(summary = "Populate tables for account and contact")
+    @PostMapping("/populate-tables")
+    public ResponseEntity<String> postPopulateTables() {
+        populateContactsTable();
+        populateAccountsTable();
+        return new ResponseEntity<>("Successfully Populated Contacts And Accounts Table", HttpStatus.OK);
+    }
+
+    public void populateContactsTable() {
+        // Creating 2 contacts for our tables to be able to see in the local ui for dynamo db
         Contact contact1 = createContactFromFile("DummyContact1.json");
         Contact contact2 = createContactFromFile("DummyContact2.json");
+        contacts = new ArrayList<>();
+        contacts.add(contact1);
+        contacts.add(contact2);
 
+        contactService.postContact(contact1);
+        contactService.postContact(contact2);
     }
 
+    public void populateAccountsTable() {
+        // Creating 2 accounts for our tables to be able to see in the local ui for dynamo db
+        Account account1 = createAccountFromFile("DummyAccount1.json");
+        Account account2 = createAccountFromFile("DummyAccount2.json");
 
-    public Contact createContactFromFile(String fileName) {
-        if (mapper == null) {
-            mapper = new ObjectMapper();
-        }
-        // read JSON file and map/convert to java POJO
-        try {
-            String path = "src/test/resources/dummy_data/" + fileName;
-            File file = new File(path);
-            return mapper.readValue(file, Contact.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+        // Account 1 will have both contacts associated to it
+        account1.setContactIds(Set.of(contacts.get(0).getUid(), contacts.get(1).getUid()));
 
-    // HTTP POST URL - http://localhost:9500/api/accounts-table
-    @PostMapping("/accounts-table")
-    public ResponseEntity<String> postAccountsTable() {
-        createAccountsTable();
-        return new ResponseEntity<>("Successfully Created Accounts Table", HttpStatus.OK);
+        // Account 2 will only have 1 contact associated to it
+        account2.setContactIds(Set.of(contacts.get(0).getUid()));
+
+        accountService.postAccount(account1);
+        accountService.postAccount(account2);
     }
 
     public void createAccountsTable() {
@@ -181,5 +198,29 @@ public class InitializeTablesController {
         emailAddressIndex.setKeySchema(indexKeySchema);
         contactsTable = createTable(tableName, attributeDefinitions, tableKeySchema,
                 Collections.singletonList(emailAddressIndex), indexKeySchema);
+    }
+
+    public Contact createContactFromFile(String fileName) {
+        // read JSON file and map/convert to java POJO
+        try {
+            String path = "src/test/resources/dummy_data/" + fileName;
+            File file = new File(path);
+            return mapper.readValue(file, Contact.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Account createAccountFromFile(String fileName) {
+        // read JSON file and map/convert to java POJO
+        try {
+            String path = "src/test/resources/dummy_data/" + fileName;
+            File file = new File(path);
+            return mapper.readValue(file, Account.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

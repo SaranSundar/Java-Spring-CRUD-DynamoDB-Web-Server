@@ -30,7 +30,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    // HTTP POST URL - http://localhost:9500/api/account
+    // HTTP POST URL - http://localhost:{{port}}/api/account
     @Operation(summary = "Create a new account")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created a new account, gets back account UID",
@@ -46,7 +46,7 @@ public class AccountController {
         return new ResponseEntity<>(account.getUid(), HttpStatus.OK);
     }
 
-    // HTTP POST URL - http://localhost:9500/api/account
+    // HTTP POST URL - http://localhost:{{port}}/api/account
     @Operation(summary = "Update existing account")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated existing account, gets back account UID",
@@ -64,7 +64,7 @@ public class AccountController {
         return new ResponseEntity<>(account.getUid(), HttpStatus.OK);
     }
 
-    // HTTP GET URL - http://localhost:9500/api/{{accountUid}}
+    // HTTP GET URL - http://localhost:{{port}}/api/{{accountUid}}
     @Operation(summary = "Get existing account")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found existing account, returns back account",
@@ -91,7 +91,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Account not found for given UID",
                     content = @Content)})
-    // HTTP GET URL - http://localhost:9500/api/{{accountUid}}/contacts
+    // HTTP GET URL - http://localhost:{{port}}/api/{{accountUid}}/contacts
     @GetMapping("/account/{accountUid}/contacts")
     public ResponseEntity<List<Contact>> getAccountContacts(@Parameter(description = "UID of existing account") @PathVariable final String accountUid) throws InvalidRequestException, NotFoundException {
         log.info("Starting to get account");
@@ -110,7 +110,7 @@ public class AccountController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Account not found for given UID",
                     content = @Content)})
-    // HTTP DELETE URL - http://localhost:9500/api/{{accountUid}}
+    // HTTP DELETE URL - http://localhost:{{port}}/api/{{accountUid}}
     @DeleteMapping("/account/{accountUid}")
     public ResponseEntity<Account> deleteAccount(@Parameter(description = "UID of existing account") @PathVariable final String accountUid) throws InvalidRequestException, NotFoundException {
         log.info("Starting to delete account");

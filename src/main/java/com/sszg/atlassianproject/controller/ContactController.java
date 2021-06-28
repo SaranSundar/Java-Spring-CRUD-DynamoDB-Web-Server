@@ -29,7 +29,7 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    // HTTP POST URL - http://localhost:9500/api/contact
+    // HTTP POST URL - http://localhost:{{port}}/api/contact
     @Operation(summary = "Create a new contact")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created a new contact, returns back contact UID",
@@ -45,7 +45,7 @@ public class ContactController {
         return new ResponseEntity<>(contact.getUid(), HttpStatus.OK);
     }
 
-    // HTTP POST URL - http://localhost:9500/api/contact
+    // HTTP POST URL - http://localhost:{{port}}/api/contact
     @Operation(summary = "Updates existing contact")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated existing contact, returns back contact UID",
@@ -63,7 +63,7 @@ public class ContactController {
         return new ResponseEntity<>(contact.getUid(), HttpStatus.OK);
     }
 
-    // HTTP GET URL - http://localhost:9500/api/contact/{{contactUid}}
+    // HTTP GET URL - http://localhost:{{port}}/api/contact/{{contactUid}}
     @Operation(summary = "Gets existing contact")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found existing contact, returns back contact",
@@ -81,7 +81,7 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
-    // HTTP DELETE URL - http://localhost:9500/api/contact/{{contactUid}}
+    // HTTP DELETE URL - http://localhost:{{port}}/api/contact/{{contactUid}}
     @Operation(summary = "Deletes existing contact")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Deletes existing contact, returns back deleted contact uid",
@@ -99,7 +99,7 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
-    // HTTP GET URL - http://localhost:9500/api/contact?email=
+    // HTTP GET URL - http://localhost:{{port}}/api/contact?email=
     @Operation(summary = "Finds all contacts with given email")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Finds all contacts with given email, then returns back list of found contacts",

@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "64c954b5-82c8-4558-b290-173e1421245a",
+		"name": "AtlassianProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Contacts",
+			"item": [
+				{
+					"name": "Create new contact",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Mulaney\",\n  \"emailAddress\": \"JohnMulaney@gmail.com\",\n  \"addressLine1\": \"77 E 4th St\",\n  \"addressLine2\": \"\",\n  \"city\": \"NYC\",\n  \"state\": \"NY\",\n  \"postalCode\": \"10003\",\n  \"country\": \"USA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/contact",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Existing Contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/contact?uid=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contact"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query contacts by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/contact?email=JohnMulaney@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"contact"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "JohnMulaney@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete existing contact",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/contact/{{contactUid}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"contact",
+								"{{contactUid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Create new Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"companyName\": \"Cisco\",\n  \"addressLine1\": \"170 West Tasman Dr.\",\n  \"addressLine2\": \"\",\n  \"city\": \"San Jose\",\n  \"state\": \"CA\",\n  \"postalCode\": \"95134\",\n  \"country\": \"USA\",\n  \"contactIds\": [\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Existing Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/account/{{accountUid}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"account",
+								"{{accountUid}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete existing account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/account/{{accountUid}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"account",
+								"{{accountUid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contacts For Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9500/api/account/{{accountUid}}/contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9500",
+							"path": [
+								"api",
+								"account",
+								"{{accountUid}}",
+								"contacts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tables",
+			"item": [
+				{
+					"name": "Initialize All Tables",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/tables",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"tables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Populate All Tables",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/populate-tables",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"populate-tables"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "Account UID",
+			"value": "accountUid"
+		}
+	]
+}
